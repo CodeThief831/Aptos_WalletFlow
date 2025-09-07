@@ -16,6 +16,7 @@ const authRoutes = require('./routes/auth');
 const paymentRoutes = require('./routes/payments');
 const offrampRoutes = require('./routes/offramp');
 const docsRoutes = require('./routes/docs');
+const bankDetailsRoutes = require('./routes/bankDetails');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -79,6 +80,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/offramp', offrampRoutes);
 app.use('/api/docs', docsRoutes);
+app.use('/api/bank-details', bankDetailsRoutes);
+
 
 // API root endpoint
 app.get('/api', (req, res) => {

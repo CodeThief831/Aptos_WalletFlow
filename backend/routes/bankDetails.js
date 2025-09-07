@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const BankDetails = require('../models/BankDetails');
-const auth = require('../middleware/auth');
+const { auth } = require('../middleware/auth');
 
 // Get all bank details for the authenticated user
 router.get('/', auth, async (req, res) => {
