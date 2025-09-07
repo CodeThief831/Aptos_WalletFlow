@@ -28,7 +28,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (isLoginMode) {
       const result = await login(formData.email, formData.password);
       if (result.success) {
@@ -42,12 +42,12 @@ const Login = () => {
         toast.error('Please fill in all required fields');
         return;
       }
-      
+
       const userData = { email, password, name, phone };
       if (walletAddress) {
         userData.walletAddress = walletAddress;
       }
-      
+
       const result = await register(userData);
       if (result.success) {
         toast.success('Registration successful!');
@@ -72,10 +72,10 @@ const Login = () => {
     <div className="min-h-screen bg-dark-950 flex items-center justify-center p-4">
       <div className="card-glass max-w-md w-full p-8">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl mx-auto mb-4 flex items-center justify-center">
-            <span className="text-white font-bold text-xl">A</span>
+          <div className="w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+            <img src="/src/assets/logo.png" alt="WalletFlow Logo" className="w-full h-full object-contain" />
           </div>
-          <h1 className="text-2xl font-bold text-gradient mb-2">Aptos OnRamp</h1>
+          <h1 className="text-2xl font-bold text-gradient mb-2">WalletFlow</h1>
           <p className="text-gray-400">
             {isLoginMode ? 'Welcome back to the future of payments' : 'Join the crypto revolution'}
           </p>
@@ -171,8 +171,8 @@ const Login = () => {
             </div>
           )}
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="btn btn-primary w-full py-3 text-lg font-semibold"
             disabled={loading}
           >
@@ -190,8 +190,8 @@ const Login = () => {
         <div className="mt-6 text-center">
           <p className="text-gray-400 text-sm">
             {isLoginMode ? "Don't have an account? " : "Already have an account? "}
-            <button 
-              type="button" 
+            <button
+              type="button"
               className="text-purple-400 hover:text-purple-300 underline font-medium"
               onClick={toggleMode}
             >
@@ -203,19 +203,19 @@ const Login = () => {
         {/* Features Section for Registration */}
         {!isLoginMode && (
           <div className="mt-8 pt-6 border-t border-dark-700">
-            <h3 className="text-sm font-medium text-gray-300 mb-3">Why choose Aptos OnRamp?</h3>
+            <h3 className="text-sm font-medium text-gray-300 mb-3">Why choose WalletFlow?</h3>
             <div className="space-y-2">
               <div className="flex items-center space-x-2 text-xs text-gray-400">
                 <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full"></div>
-                <span>Instant fiat-to-crypto conversion</span>
+                <span>ON-RAMP: Buy crypto with INR instantly</span>
               </div>
               <div className="flex items-center space-x-2 text-xs text-gray-400">
                 <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full"></div>
-                <span>Secure transactions with Razorpay</span>
+                <span>OFF-RAMP: Sell crypto to bank account</span>
               </div>
               <div className="flex items-center space-x-2 text-xs text-gray-400">
                 <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full"></div>
-                <span>Direct transfer to your Aptos wallet</span>
+                <span>TRANSFER: Send crypto wallet-to-wallet</span>
               </div>
             </div>
           </div>
