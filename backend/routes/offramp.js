@@ -2,6 +2,7 @@ const express = require('express');
 const { body } = require('express-validator');
 const Transaction = require('../models/Transaction');
 const User = require('../models/User');
+const BankDetails = require('../models/BankDetails');
 const { auth } = require('../middleware/auth');
 const { paymentLimiter } = require('../middleware/rateLimiter');
 const handleValidationErrors = require('../middleware/validation');
@@ -157,14 +158,20 @@ router.post('/create-withdrawal', auth, paymentLimiter, [
     const { amount, tokenType, walletAddress } = req.body;
     const userId = req.userId;
 
-    // Get user with bank details
+    // Get user
     const user = await User.findById(userId);
     
-    // Check if user has bank details
-    if (!user.bankDetails || !user.bankDetails.accountNumber) {
+    // Check if user has bank details in the new BankDetails collection
+    const userBankDetails = await BankDetails.findOne({
+      userId: userId,
+      isActive: true,
+      isDefault: true
+    });
+    
+    if (!userBankDetails) {
       return res.status(400).json({
         success: false,
-        error: 'Please add your bank details in your profile first'
+        error: 'Please add your bank details first using the bank details manager'
       });
     }
 
@@ -183,10 +190,10 @@ router.post('/create-withdrawal', auth, paymentLimiter, [
     const netINR = grossINR - platformFee;
 
     // Check minimum withdrawal amount
-    if (netINR < 50) {
+    if (netINR < 5) {
       return res.status(400).json({
         success: false,
-        error: 'Minimum withdrawal amount is ₹50 after fees'
+        error: 'Minimum withdrawal amount is ₹5 after fees'
       });
     }
 
@@ -212,10 +219,10 @@ router.post('/create-withdrawal', auth, paymentLimiter, [
       metadata: {
         withdrawalType: 'offramp',
         bankDetails: {
-          accountNumber: user.bankDetails.accountNumber,
-          ifscCode: user.bankDetails.ifscCode,
-          accountHolderName: user.bankDetails.accountHolderName,
-          bankName: user.bankDetails.bankName
+          accountNumber: userBankDetails.accountNumber,
+          ifscCode: userBankDetails.ifscCode,
+          accountHolderName: userBankDetails.accountHolderName,
+          bankName: userBankDetails.bankName
         },
         userAgent: req.headers['user-agent'],
         ipAddress: req.ip || req.connection.remoteAddress,
@@ -241,9 +248,9 @@ router.post('/create-withdrawal', auth, paymentLimiter, [
         processingTime: '2-3 business days',
         status: 'withdrawal_requested',
         bankDetails: {
-          accountHolderName: user.bankDetails.accountHolderName,
-          bankName: user.bankDetails.bankName,
-          accountNumber: `****${user.bankDetails.accountNumber.slice(-4)}` // Masked account number
+          accountHolderName: userBankDetails.accountHolderName,
+          bankName: userBankDetails.bankName,
+          accountNumber: `****${userBankDetails.accountNumber.slice(-4)}` // Masked account number
         }
       },
       instructions: {
