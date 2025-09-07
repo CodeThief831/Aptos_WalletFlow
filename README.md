@@ -1,4 +1,4 @@
-# 🚀 Aptos OnRamp - Complete Crypto-Fiat Bridge Platform
+# 🚀 WalletFlow - Complete Crypto-Fiat Bridge Platform
 
 [![Built on Aptos](https://img.shields.io/badge/Built%20on-Aptos-00D4AA?style=for-the-badge&logo=blockchain)](https://aptos.dev/)
 [![React](https://img.shields.io/badge/React-18.2.0-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
@@ -6,7 +6,7 @@
 [![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?style=for-the-badge&logo=mongodb)](https://mongodb.com/)
 [![Move](https://img.shields.io/badge/Move-Smart%20Contracts-FF6B35?style=for-the-badge)](https://move-language.github.io/)
 
-> **🎯 Hackathon Project**: A comprehensive, production-ready crypto-fiat bridge built on Aptos blockchain, enabling seamless conversion between crypto and Indian Rupees with enterprise-grade security and user experience.
+> **🎯 Hackathon Project**: WalletFlow is a comprehensive, production-ready crypto-fiat bridge built on Aptos blockchain, enabling seamless ON-RAMP, OFF-RAMP, and wallet-to-wallet transfers with enterprise-grade security and user experience.
 
 ## 🌟 **Demo & Live Links**
 
@@ -19,25 +19,27 @@
 ## 🏆 **What Makes This Special**
 
 ### 💡 **Innovation Highlights**
-- **Bidirectional Bridge**: First-of-its-kind OnRamp + OffRamp solution for Aptos
+- **Triple Bridge Solution**: First-of-its-kind ON-RAMP + OFF-RAMP + wallet-to-wallet transfer solution for Aptos
 - **Real Bank Integration**: Live bank account management with validation
 - **Smart Contract Suite**: Comprehensive Move contracts with advanced features
 - **Production Architecture**: Enterprise-grade backend with proper authentication & security
 - **Real-time Processing**: Live transaction tracking with blockchain verification
 
 ### 🎯 **Problem Solved**
-Traditional crypto on/off-ramps are complex, expensive, and often lack proper Indian market integration. Our solution provides:
-- **Instant conversions** between APT/USDC ↔ INR
-- **Direct bank transfers** with 2-3 day processing
-- **Competitive rates** with transparent fee structure
-- **Secure infrastructure** with proper KYC and compliance
+Traditional crypto solutions are fragmented and complex. WalletFlow provides a unified platform offering:
+- **🔄 ON-RAMP**: Instant INR to crypto conversions (APT/USDC)
+- **🔄 OFF-RAMP**: Seamless crypto to INR with direct bank transfers
+- **🔄 Wallet Transfers**: Fast peer-to-peer crypto transfers
+- **💰 Competitive rates** with transparent fee structure
+- **🔐 Secure infrastructure** with proper KYC and compliance
 
 ## 🚀 **Key Features**
 
-### 🔄 **OnRamp & OffRamp**
-- **📥 OnRamp**: Buy APT/USDC with INR via Razorpay
-- **📤 OffRamp**: Sell APT/USDC for INR to bank account
-- **⚡ Instant Processing**: Real-time blockchain transactions
+### 🔄 **Triple Bridge Solution**
+- **📥 ON-RAMP**: Buy APT/USDC with INR via Razorpay integration
+- **📤 OFF-RAMP**: Sell APT/USDC for INR with direct bank transfers
+- **💸 Wallet-to-Wallet**: Instant peer-to-peer crypto transfers
+- **⚡ Real-time Processing**: Live blockchain transaction tracking
 - **🏦 Bank Integration**: Direct transfers to Indian bank accounts
 
 ### 🔐 **Security & Authentication**
@@ -55,7 +57,9 @@ Traditional crypto on/off-ramps are complex, expensive, and often lack proper In
 - **💰 Balance Display**: Real-time wallet balance from blockchain
 
 ### 🤖 **Smart Contracts**
-- **🏗️ OnRamp.move**: Core conversion logic with fee management
+- **🏗️ OnRamp.move**: Core ON-RAMP conversion logic with fee management
+- **📤 OffRamp.move**: OFF-RAMP processing with withdrawal management
+- **💸 Transfer.move**: Wallet-to-wallet transfer operations
 - **💰 Treasury.move**: Fund management with daily limits
 - **📊 PriceOracle.move**: Real-time price feeds
 - **✅ KYCModule.move**: Compliance and verification system
@@ -100,12 +104,13 @@ KYC Documents            // 📋 Compliance documentation
 ## 📁 **Project Structure**
 
 ```
-aptos-onramp/
+walletflow/
 ├── 🎨 frontend/                    # React Frontend Application
 │   ├── src/
 │   │   ├── components/            # 🧩 Reusable UI Components
-│   │   │   ├── OnRampForm.jsx     # 💰 Buy crypto with INR
-│   │   │   ├── OffRampForm.jsx    # 🏦 Sell crypto for INR
+│   │   │   ├── OnRampForm.jsx     # 💰 ON-RAMP: Buy crypto with INR
+│   │   │   ├── OffRampForm.jsx    # 🏦 OFF-RAMP: Sell crypto for INR
+│   │   │   ├── TransferForm.jsx   # 💸 Wallet-to-wallet transfers
 │   │   │   ├── BankDetailsManager.jsx # 🏦 Bank account management
 │   │   │   ├── WalletButton.jsx   # 🔗 Wallet connection
 │   │   │   └── AuthModal.jsx      # 🔐 Authentication modal
@@ -115,7 +120,9 @@ aptos-onramp/
 │   │   ├── pages/                 # 📄 Main Application Pages
 │   │   │   ├── HomePage.jsx       # 🏠 Landing page
 │   │   │   ├── Dashboard.jsx      # 📊 User dashboard
-│   │   │   └── OffRamp.jsx        # 📤 OffRamp interface
+│   │   │   ├── OnRamp.jsx         # 📥 ON-RAMP interface
+│   │   │   ├── OffRamp.jsx        # 📤 OFF-RAMP interface
+│   │   │   └── Transfer.jsx       # 💸 Wallet transfer interface
 │   │   └── App.jsx                # 🎯 Main application component
 │   └── package.json               # 📦 Frontend dependencies
 │
@@ -127,8 +134,9 @@ aptos-onramp/
 │   │   └── KYCDocument.js         # 📋 KYC schema
 │   ├── routes/                    # 🛣️ API Route Handlers
 │   │   ├── auth.js                # 🔐 Authentication routes
-│   │   ├── payments.js            # 💳 Payment processing
-│   │   ├── offramp.js            # 📤 OffRamp operations
+│   │   ├── payments.js            # 💳 Payment processing (ON-RAMP)
+│   │   ├── offramp.js            # 📤 OFF-RAMP operations
+│   │   ├── transfers.js          # 💸 Wallet-to-wallet transfers
 │   │   ├── docs.js               # 📋 KYC document handling
 │   │   └── bankDetails.js        # 🏦 Bank account management
 │   ├── middleware/                # 🛡️ Security & Validation
@@ -143,7 +151,9 @@ aptos-onramp/
 │   └── server.js                  # 🚀 Main server file
 │
 ├── 🔗 contracts/                   # Move Smart Contracts
-│   ├── OnRamp.move                # 🏗️ Core conversion logic
+│   ├── OnRamp.move                # 🏗️ ON-RAMP conversion logic
+│   ├── OffRamp.move              # 📤 OFF-RAMP processing
+│   ├── Transfer.move             # 💸 Wallet-to-wallet transfers
 │   ├── PriceOracle.move          # 📊 Price feed management
 │   ├── Treasury.move             # 💰 Fund management
 │   ├── KYCModule.move            # ✅ Compliance system
@@ -247,13 +257,14 @@ npm run dev
 ### **7️⃣ Test the Application**
 1. **🔗 Connect Wallet**: Click "Connect Petra Wallet"
 2. **📝 Register**: Create account with email/phone
-3. **💰 OnRamp**: Buy APT with test Razorpay payment
-4. **🏦 OffRamp**: Add bank details and sell APT for INR
-5. **📊 Dashboard**: View transaction history
+3. **💰 ON-RAMP**: Buy APT with test Razorpay payment
+4. **🏦 OFF-RAMP**: Add bank details and sell APT for INR
+5. **💸 Transfer**: Send crypto to other wallets
+6. **📊 Dashboard**: View transaction history
 
 ## 💡 **Usage Examples**
 
-### **OnRamp Flow (Buy Crypto)**
+### **ON-RAMP Flow (Buy Crypto)**
 ```javascript
 // User Journey:
 1. Connect Petra Wallet 🔗
@@ -263,7 +274,7 @@ npm run dev
 5. Receive tokens instantly ⚡
 ```
 
-### **OffRamp Flow (Sell Crypto)**
+### **OFF-RAMP Flow (Sell Crypto)**
 ```javascript
 // User Journey:
 1. Connect Wallet + Login 🔐
@@ -275,15 +286,44 @@ npm run dev
 7. Receive INR in bank (2-3 days) 🏦
 ```
 
+### **Wallet-to-Wallet Transfer Flow**
+```javascript
+// User Journey:
+1. Connect Wallet + Login 🔐
+2. Enter recipient wallet address 🎯
+3. Select token & amount 💰
+4. Review transfer details 📊
+5. Confirm & sign transaction ✍️
+6. Instant transfer completion ⚡
+```
+
 ## 📊 **Smart Contract Features**
 
-### **OnRamp.move - Core Logic**
+### **OnRamp.move - ON-RAMP Logic**
 ```move
 // Key Functions:
 process_onramp()           // 💰 Convert INR to crypto
-create_withdrawal_request() // 📤 Start OffRamp process
+validate_payment()         // ✅ Verify Razorpay payments
+mint_tokens()             // 🪙 Mint USDC tokens
+transfer_apt()            // ⚡ Transfer APT tokens
+```
+
+### **OffRamp.move - OFF-RAMP Logic**
+```move
+// Key Functions:
+create_withdrawal_request() // 📤 Start OFF-RAMP process
 process_withdrawal()       // ✅ Complete withdrawal
-update_exchange_rate()     // 📊 Update conversion rates
+validate_bank_details()    // 🏦 Verify bank information
+transfer_to_treasury()     // 💰 Move tokens to treasury
+```
+
+### **Transfer.move - Wallet Transfers**
+```move
+// Key Functions:
+transfer_tokens()          // 💸 Wallet-to-wallet transfers
+validate_recipient()       // ✅ Verify recipient address
+calculate_fees()          // 💰 Transfer fee calculation
+emit_transfer_event()      // 📡 Transaction tracking
 ```
 
 ### **PriceOracle.move - Price Feeds**
@@ -403,34 +443,36 @@ docker-compose up --build
 ## 🏆 **Hackathon Highlights**
 
 ### **🎯 Innovation Score**
-- **Unique Solution**: First comprehensive Aptos OnRamp/OffRamp
+- **Unique Solution**: First comprehensive Aptos ON-RAMP/OFF-RAMP/Transfer platform
 - **Real Integration**: Live banking & payment systems
 - **Production Ready**: Enterprise-grade architecture
 - **User Focused**: Intuitive UX for crypto newcomers
 
 ### **🛠️ Technical Excellence**
+- **Triple Bridge**: ON-RAMP + OFF-RAMP + Wallet transfers
 - **Full Stack**: Frontend + Backend + Blockchain
 - **Scalable Architecture**: Microservices ready
 - **Security First**: Multiple security layers
 - **Performance Optimized**: Sub-second response times
 
 ### **📊 Business Impact**
-- **Market Need**: Solves real Indian crypto adoption barrier
-- **Scalable Model**: Revenue through transaction fees
+- **Market Need**: Solves real Indian crypto adoption barrier with unified platform
+- **Scalable Model**: Revenue through transaction fees across all three services
 - **Compliance Ready**: Built with regulations in mind
-- **User Acquisition**: Simplified onboarding process
+- **User Acquisition**: Simplified onboarding for ON-RAMP, OFF-RAMP & transfers
 
 ## 🤝 **Team & Contributions**
 
 ### **Individual Contributions**
 ```javascript
 // Solo Developer Achievement:
-✅ 15+ React Components        // Frontend mastery
-✅ 25+ API Endpoints          // Backend expertise  
-✅ 4 Smart Contracts         // Blockchain proficiency
+✅ 20+ React Components        // Frontend mastery (ON-RAMP/OFF-RAMP/Transfer UIs)
+✅ 30+ API Endpoints          // Backend expertise across all services
+✅ 6 Smart Contracts         // Blockchain proficiency (full suite)
 ✅ Complete Database Design   // Data architecture
 ✅ Security Implementation    // InfoSec knowledge
-✅ Payment Integration       // FinTech experience
+✅ Payment Integration       // FinTech experience (ON-RAMP)
+✅ Banking Integration       // Financial systems (OFF-RAMP)
 ✅ Real-time Features       // WebSocket & events
 ✅ Mobile Responsiveness    // UI/UX skills
 ```
@@ -444,16 +486,18 @@ docker-compose up --build
 ## 🔮 **Future Roadmap**
 
 ### **Phase 1: Enhanced Features**
-- **🔄 Multi-token Support**: BTC, ETH, SOL
+- **🔄 Multi-token Support**: BTC, ETH, SOL for all services
 - **📱 Mobile App**: React Native application
-- **🏦 More Banks**: IMPS, NEFT integration
-- **📊 Advanced Analytics**: Trading insights
+- **🏦 More Banks**: IMPS, NEFT integration for OFF-RAMP
+- **� Bulk Transfers**: Multiple recipient wallet transfers
+- **�📊 Advanced Analytics**: Trading insights
 
 ### **Phase 2: Scale & Expand**
-- **🌍 Multi-currency**: USD, EUR support
+- **🌍 Multi-currency**: USD, EUR support for ON-RAMP/OFF-RAMP
 - **🤖 DeFi Integration**: Yield farming options
 - **📈 Trading Features**: Limit orders, charts
 - **🎯 Business Accounts**: Corporate solutions
+- **⚡ Cross-chain**: Bridge to other blockchains
 
 ### **Phase 3: Enterprise**
 - **🏢 White Label**: Partner integrations
@@ -496,17 +540,17 @@ This project is licensed under the **MIT License** - see [LICENSE](LICENSE) file
 
 ## 🎉 **Final Words**
 
-This project represents a **complete, production-ready solution** for crypto-fiat bridging on Aptos blockchain. Built with **modern technologies**, **security best practices**, and **user-centric design**, it solves real-world problems in the Indian cryptocurrency adoption space.
+**WalletFlow** represents a **complete, production-ready solution** for crypto-fiat bridging on Aptos blockchain. Built with **modern technologies**, **security best practices**, and **user-centric design**, it solves real-world problems in the Indian cryptocurrency adoption space by providing a unified platform for ON-RAMP, OFF-RAMP, and wallet-to-wallet transfers.
 
 ### **🏆 Hackathon Judge Highlights:**
-- **✅ Complete Solution**: Full-stack implementation with all components
+- **✅ Complete Solution**: Full-stack implementation with all three core services
 - **✅ Real Integration**: Live payments and banking systems
 - **✅ Production Quality**: Enterprise-grade code and architecture
-- **✅ Innovation**: Novel approach to Aptos ecosystem growth
+- **✅ Innovation**: Novel unified approach to Aptos ecosystem growth
 - **✅ User Experience**: Intuitive interface for crypto newcomers
 - **✅ Technical Depth**: Smart contracts, security, performance optimization
 
-**🚀 Ready to revolutionize crypto adoption in India with Aptos blockchain!**
+**🚀 Ready to revolutionize crypto adoption in India with WalletFlow on Aptos blockchain!**
 
 ---
 
