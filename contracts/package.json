@@ -1,0 +1,25 @@
+{
+  "name": "aptos-onramp-contracts",
+  "version": "1.0.0",
+  "description": "Aptos OnRamp Smart Contracts - Complete DeFi infrastructure for INR to crypto conversions",
+  "main": "publish.ts",
+  "scripts": {
+    "deploy": "ts-node publish.ts",
+    "deploy-testnet": "chmod +x deploy.sh && ./deploy.sh",
+    "deploy-mainnet": "NETWORK=mainnet chmod +x deploy.sh && ./deploy.sh",
+    "compile": "aptos move compile",
+    "test": "aptos move test",
+    "clean": "rm -rf build/"
+  },
+  "devDependencies": {
+    "@aptos-labs/ts-sdk": "^1.9.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "keywords": ["aptos", "defi", "onramp", "crypto", "move", "smart-contracts"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-repo/aptos-onramp"
+  },
+  "license": "MIT"
+}

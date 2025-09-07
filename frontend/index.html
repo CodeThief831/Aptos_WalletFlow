@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WalletFlow</title>
+    <meta name="description" content="Buy Aptos (APT) and USDC with Indian Rupees using UPI, cards, and net banking. Secure, instant, and built for India." />
+    
+    <!-- Razorpay Checkout Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
+    <script>
+      // Fallback check for Razorpay loading
+      window.addEventListener('load', function() {
+        if (typeof window.Razorpay === 'undefined') {
+          console.warn('Razorpay failed to load from CDN, attempting fallback...');
+          // You can add a fallback CDN here if needed
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

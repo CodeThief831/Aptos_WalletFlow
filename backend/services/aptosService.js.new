@@ -1,0 +1,237 @@
+const { Aptos, AptosConfig, Network, Account, Ed25519PrivateKey } = require('@aptos-labs/ts-sdk');
+
+class AptosService {
+  constructor() {
+    this.aptos = null;
+    this.account = null;
+    this.isInitialized = false;
+    this.network = process.env.APTOS_NETWORK || 'testnet';
+  }
+
+  async initialize() {
+    try {
+      console.log(`🚀 Initializing Aptos service on ${this.network}...`);
+      
+      // Initialize Aptos client
+      const config = new AptosConfig({ 
+        network: this.network === 'testnet' ? Network.TESTNET : Network.MAINNET 
+      });
+      this.aptos = new Aptos(config);
+
+      // Initialize account from private key
+      if (process.env.APTOS_PRIVATE_KEY) {
+        try {
+          const privateKey = new Ed25519PrivateKey(process.env.APTOS_PRIVATE_KEY);
+          this.account = Account.fromPrivateKey({ privateKey });
+          console.log(`✅ Aptos account loaded: ${this.account.accountAddress.toString()}`);
+        } catch (error) {
+          console.warn('⚠️ Invalid private key provided, using demo account');
+          // Generate a demo account for testing
+          this.account = Account.generate();
+          console.log(`🔧 Demo account generated: ${this.account.accountAddress.toString()}`);
+        }
+      } else {
+        console.warn('⚠️ No private key provided, using demo account');
+        this.account = Account.generate();
+        console.log(`🔧 Demo account generated: ${this.account.accountAddress.toString()}`);
+      }
+
+      // Check account balance
+      await this.checkAccountBalance();
+      
+      this.isInitialized = true;
+      console.log('✅ Aptos service initialized successfully');
+      
+    } catch (error) {
+      console.error('❌ Failed to initialize Aptos service:', error);
+      throw error;
+    }
+  }
+
+  async checkAccountBalance() {
+    try {
+      const balance = await this.aptos.getAccountAPTAmount({
+        accountAddress: this.account.accountAddress
+      });
+      console.log(`💰 Account balance: ${balance / 100000000} APT`);
+      return balance;
+    } catch (error) {
+      console.warn('⚠️ Could not fetch account balance:', error.message);
+      return 0;
+    }
+  }
+
+  async getAccountBalance(accountAddress) {
+    try {
+      const balance = await this.aptos.getAccountAPTAmount({
+        accountAddress: accountAddress
+      });
+      return balance / 100000000; // Convert from Octas to APT
+    } catch (error) {
+      console.error('Failed to get account balance:', error);
+      return 0;
+    }
+  }
+
+  async transferTokens(toAddress, tokenType, amountInINR) {
+    if (!this.isInitialized) {
+      throw new Error('Aptos service not initialized');
+    }
+
+    try {
+      console.log(`🔄 Starting transfer: ${amountInINR} INR worth of ${tokenType} to ${toAddress}`);
+      
+      // Calculate token amount based on conversion rates
+      const conversionRates = {
+        APT: 0.1,    // 1 INR = 0.1 APT
+        USDC: 0.012  // 1 INR = 0.012 USDC
+      };
+      
+      const tokenAmount = amountInINR * conversionRates[tokenType];
+      console.log(`📊 Converting ${amountInINR} INR to ${tokenAmount} ${tokenType}`);
+
+      if (tokenType === 'APT') {
+        return await this.transferAPT(toAddress, tokenAmount);
+      } else if (tokenType === 'USDC') {
+        return await this.transferUSDC(toAddress, tokenAmount);
+      } else {
+        throw new Error(`Unsupported token type: ${tokenType}`);
+      }
+    } catch (error) {
+      console.error(`❌ Transfer failed:`, error);
+      throw error;
+    }
+  }
+
+  async transferAPT(toAddress, amount) {
+    try {
+      console.log(`💸 Transferring ${amount} APT to ${toAddress}`);
+      
+      // Convert to Octas (APT's smallest unit)
+      const amountInOctas = Math.floor(amount * 100000000);
+      
+      // Check if we have enough balance
+      const balance = await this.checkAccountBalance();
+      if (balance < amountInOctas) {
+        console.warn(`⚠️ Insufficient balance. Required: ${amountInOctas}, Available: ${balance}`);
+        // For demo purposes, we'll simulate the transfer
+        return await this.simulateTransfer(toAddress, amount, 'APT');
+      }
+
+      // Build the transaction
+      const transaction = await this.aptos.transaction.build.simple({
+        sender: this.account.accountAddress,
+        data: {
+          function: "0x1::aptos_account::transfer",
+          functionArguments: [toAddress, amountInOctas]
+        }
+      });
+
+      // Sign and submit the transaction
+      const pendingTransaction = await this.aptos.signAndSubmitTransaction({
+        signer: this.account,
+        transaction
+      });
+
+      console.log(`⏳ Transaction submitted: ${pendingTransaction.hash}`);
+
+      // Wait for transaction confirmation
+      const confirmedTransaction = await this.aptos.waitForTransaction({
+        transactionHash: pendingTransaction.hash
+      });
+
+      console.log(`✅ APT transfer completed! Hash: ${confirmedTransaction.hash}`);
+      
+      return {
+        hash: confirmedTransaction.hash,
+        amount: amount,
+        tokenType: 'APT',
+        recipient: toAddress,
+        success: true
+      };
+
+    } catch (error) {
+      console.error('APT transfer failed:', error);
+      // For demo purposes, simulate the transfer if real transfer fails
+      return await this.simulateTransfer(toAddress, amount, 'APT');
+    }
+  }
+
+  async transferUSDC(toAddress, amount) {
+    try {
+      console.log(`💸 Transferring ${amount} USDC to ${toAddress}`);
+      
+      // For testnet USDC, we'll simulate the transfer since USDC contract might not be available
+      console.log('ℹ️ USDC transfer is simulated for demo purposes');
+      return await this.simulateTransfer(toAddress, amount, 'USDC');
+
+    } catch (error) {
+      console.error('USDC transfer failed:', error);
+      return await this.simulateTransfer(toAddress, amount, 'USDC');
+    }
+  }
+
+  async simulateTransfer(toAddress, amount, tokenType) {
+    console.log(`🎭 Simulating ${tokenType} transfer for demo purposes`);
+    
+    // Generate a mock transaction hash
+    const mockHash = '0x' + Array(64).fill(0).map(() => Math.floor(Math.random() * 16).toString(16)).join('');
+    
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 2000 + Math.random() * 1000));
+    
+    console.log(`✅ Simulated ${tokenType} transfer completed! Mock Hash: ${mockHash}`);
+    
+    return {
+      hash: mockHash,
+      amount: amount,
+      tokenType: tokenType,
+      recipient: toAddress,
+      success: true,
+      simulated: true
+    };
+  }
+
+  async getTransactionDetails(transactionHash) {
+    try {
+      if (!this.isInitialized) {
+        throw new Error('Aptos service not initialized');
+      }
+
+      const transaction = await this.aptos.getTransactionByHash({
+        transactionHash: transactionHash
+      });
+
+      return {
+        hash: transaction.hash,
+        success: transaction.success,
+        timestamp: transaction.timestamp,
+        sender: transaction.sender,
+        gasUsed: transaction.gas_used,
+        gasUnitPrice: transaction.gas_unit_price
+      };
+    } catch (error) {
+      console.error('Failed to get transaction details:', error);
+      return null;
+    }
+  }
+
+  getNetworkInfo() {
+    return {
+      network: this.network,
+      accountAddress: this.account?.accountAddress?.toString() || null,
+      isInitialized: this.isInitialized
+    };
+  }
+}
+
+// Create and export service instance
+const aptosService = new AptosService();
+
+// Export both the instance and the transfer function for direct use
+module.exports = {
+  aptosService,
+  transferTokens: (toAddress, tokenType, amountInINR) => {
+    return aptosService.transferTokens(toAddress, tokenType, amountInINR);
+  }
+};
