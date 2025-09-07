@@ -10,7 +10,8 @@
 
 ## 🌟 **Demo & Live Links**
 
-- **🌐 Live Demo**: [Coming Soon]
+- **🌐 Live Demo**: https://drive.google.com/file/d/1UMKj4GB6f3a4A344ZYWxFkYyyoj46sRQ/view?usp=sharing
+- **PPT**: https://www.canva.com/design/DAGyPg14-og/4OFF4KTvq8vyjOPOZEOV-w/watch?utm_content=DAGyPg14-og&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hc3145ad632
 - **📱 Frontend**: `http://localhost:5173`
 - **⚙️ Backend API**: `http://localhost:3001`
 - **📊 Database**: MongoDB Atlas / Local MongoDB
